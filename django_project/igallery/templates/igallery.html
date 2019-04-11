@@ -138,7 +138,14 @@
 
 <div class="jumbotron text-center" background-color="lightblue">
   <h1>Yiding's Online Gallery</h1>
-  <p>Welcome, user TODO</p> 
+  <p>
+    {% if user.is_authenticated %}
+      Welcome 
+    '{{ user.username }}'
+    {% else %}
+      <a href="{% url 'login' %}?next={{request.path}}">Login</a>
+    {% endif %}
+  </p> 
 </div>
   
 <!--catMajorContainer 1-->
@@ -208,9 +215,14 @@
             <div class="modal-body">
               <div class="container-fluid center-block">
                 <div class="cat-upload">
+                  
                   <div class="cat-edit">
-                    <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
-                    <label for="imageUpload"></label>
+                      <form action="{% url 'upload_image' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                        <p>
+                          <input type='file' id="imageUpload" name="image" accept=".png, .jpg, .jpeg" />
+                        </p>
+                        <label type="submit" value="submit" for="imageUpload"></label>
+                      <form>
                   </div>
                   
                   <div class="cat-preview">
@@ -224,6 +236,8 @@
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>
+
+
         </div>
       </div>
 
@@ -252,9 +266,17 @@
       </div>
 
       <!--User Login-->
-      <span data-toggle="tooltip" title="Upload a ca">
-        <button type="button" class="btn btn-md btnCatSlide text-center"><h6> <a href="signup">login</a> </h6></button>
-      </span>
+      <a href="{% url 'login' %}?next={{request.path}}">
+        <span data-toggle="tooltip" title="Login">
+          <button type="button" class="btn btn-md btnCatSlide text-center"><h6> login </h6></button>
+        </span>
+      </a>
+
+      <a href="{% url 'logout' %}">
+        <span data-toggle="tooltip" title="Logout">
+          <button type="button" class="btn btn-md btnCatSlide text-center"><h6> logout </h6></button>
+        </span>
+      </a>  
     </div>
 
 

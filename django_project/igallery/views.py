@@ -12,15 +12,14 @@ def test(request):
    text = """<h1>welcome to my app !</h1>"""
    return HttpResponse(text)
 
-def upload_file(request):
+def upload_image(request):
     if request.method == 'POST':
         form = UploadImageForm (request.POST, request.FILES)
         if form.is_valid():
             imageModel = ImageModel()
-            imageModel.name = form.cleaned_data["name"]
             imageModel.picture = form.cleaned_data["picture"]
             imageModel.save()
-            return HttpResponse('You Did It!')
+            return HttpResponse('Upload Accepted. Have a good day meow.')
     else:
         form = UploadImageForm()
-    return render (request, 'upload.html', {'form':form}) 
+    return HttpResponse ("Upload Denied, allowed only via POST") 

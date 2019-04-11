@@ -1,4 +1,4 @@
-#!/mnt/c/Assets/UbuntuWorkspace/python_env_for_django/bin/python3
+#!/mnt/c/Assets/UbuntuWorkspace/iGallery/bin/python3
 from django.core import management
 
 if __name__ == "__main__":

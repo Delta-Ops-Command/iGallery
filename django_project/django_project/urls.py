@@ -15,10 +15,11 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('registration/signup.html')
+            return redirect('/igallery/')
     else:
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
+    
 def requestMain(request):
     return render(request, 'main/main_view.html')
 def debugRequestLogout(request):
@@ -27,7 +28,7 @@ def debugRequestLogout(request):
 
 
 urlpatterns = [
-    re_path(r'^$', requestMain),
+    re_path(r'^$', requestMain, name="index"),
     re_path(r'^admin/', admin.site.urls, name="admin"),
     re_path(r'^signup/', signup, name="signup"),
     re_path(r'^igallery/', include('igallery.urls'), name='igallery'),
