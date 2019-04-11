@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/mnt/c/Assets/UbuntuWorkspace/python_env_for_django"
+set -gx VIRTUAL_ENV "/mnt/c/Assets/UbuntuWorkspace/iGallery"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
@@ -52,8 +52,8 @@ if test -z "$VIRTUAL_ENV_DISABLE_PROMPT"
         set -l old_status $status
 
         # Prompt override?
-        if test -n "(python_env_for_django) "            
-            printf "%s%s" "(python_env_for_django) " (set_color normal)
+        if test -n "(iGallery) "            
+            printf "%s%s" "(iGallery) " (set_color normal)
         else
             # ...Otherwise, prepend env
             set -l _checkbase (basename "$VIRTUAL_ENV")

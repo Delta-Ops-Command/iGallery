@@ -9,6 +9,7 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     re_path(r'^$', views.start),
     re_path(r'^test/$', views.test),
+    re_path(r'^upload/$', views.test),
 ]
 
 
