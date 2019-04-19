@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'igallery.apps.IgalleryConfig',
 ]
 
+MEDIA_ROOT = '/mnt/c/Assets/UbuntuWorkspace/iGallery/django_project/assets/'
+MEDIA_URL = '/media/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1
 

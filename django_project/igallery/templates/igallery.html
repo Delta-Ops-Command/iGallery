@@ -16,7 +16,6 @@
       padding: 3rem 1rem 3rem 1rem;
       color: #5a5a5a;
     }
-
     
     .carousel-inner > .item {
       height: 250px;
@@ -31,6 +30,7 @@
       transform: translate(-25%, -25%);
       max-height: 300px;
       width: auto;
+      text-align: center;
     }
 
     .carousel-control.left,
@@ -68,12 +68,16 @@
     .cat-upload .cat-edit input {
       display: none;
     }
-    .cat-upload .cat-edit input + label {
-      display: inline-block;
+
+    #labelImagePreview {
+      float:right;
+      /*display: inline-block;*/
+      top:0;
+      padding: auto;
       width: 34px;
       height: 34px;
       margin-bottom: 0;
-      background: #ffffff;
+      background:#f1f1f1;
       border: 1px solid transparent;
       box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
       cursor: pointer;
@@ -213,24 +217,38 @@
               <h4 class="modal-title">Cat Upload</h4>
             </div>
             <div class="modal-body">
-              <div class="container-fluid center-block">
-                <div class="cat-upload">
-                  
-                  <div class="cat-edit">
-                      <form action="{% url 'upload_image' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-                        <p>
-                          <input type='file' id="imageUpload" name="image" accept=".png, .jpg, .jpeg" />
-                        </p>
-                        <label type="submit" value="submit" for="imageUpload"></label>
-                      <form>
+                <form  method="post" enctype="multipart/form-data" action="{% url 'upload_image' %}">
+                  <input type="hidden" id="csrf" name="csrf" value="{{ csrf_token }}"/>
+                  <div class="form-group">
+                      <label for="usr">Image:</label>
+                      <input type="file" id="document" name="document" class="form-control"  required>
                   </div>
-                  
-                  <div class="cat-preview">
-                    <div id="imagePreview" style="background-image: url();">
+                  <div class="form-group">
+                      <button type="submit" class="btn btn-success">Feed it</button>
+                  </div>
+                </form>
+                  <!--
+              <form action="{% url 'upload_image' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                <div class="container-fluid center-block">
+                  <div class="cat-upload">
+                    
+                    <div class="cat-edit">
+                        
+                      <p>
+                        <input type='file' id="imageUpload" name="image" accept=".png, .jpg, .jpeg" />
+                      </p>
+                      <label id="labelImagePreview" for="imageUpload"> :3 </label>
+                        
                     </div>
+                    
+                    <div class="cat-preview">
+                      <div id="imagePreview" style="background-image: url();">
+                      </div>
+                    </div>
+                    <input type="submit" value="Submit" ></input>
                   </div>
                 </div>
-              </div>
+              </form>-->
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -258,7 +276,7 @@
               <img id="modalImgCatDisplay" src="assets/pic1.jpg" alt="Cat" style="height:100%; width:100%; object-fit: contain; max-height: 30vh;">
             </div>
             <div class="modal-footer">
-              <a id="modalBtnCatDownloadYes" href="PlaceHolder" download="Cat Picture" type="button" class="btn btn-default" download>YES!</a>
+              <a id="modalBtnCatDownloadYes" href="Dummy" download="Cat Picture" type="button" class="btn btn-default" download>YES!</a>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>

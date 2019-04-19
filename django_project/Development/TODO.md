@@ -12,3 +12,11 @@ TODO&Logs:
     7. Deploy to DigitalOcean
     8. Deploy on Domain
     9. Deploy Firewall
+
+
+Minor Specifications:
+	Media should be stored in separate directories, MEDIA_ROOT relative to home/
+	Portability
+	Files handled with proper procedures
+	No anti-hacking, but do avoid user-end mistakesy
+
