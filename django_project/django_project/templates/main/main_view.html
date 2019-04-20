@@ -1,9 +1,22 @@
 <a href="/igallery/"> iGallery <a> <br>
-<a href="/accounts/login/"> login <a> <br>
+<a href="/accounts/login/?next={{ request.path }}"> login <a> <br>
 <a href="/accounts/logout/"> logout <a> <br>
 <a href="/signup/"> signup <a> <br>
-<a href="/accounts/reset_password/"> Password Reset <a> <br>
+<a href="/accounts/password_reset/"> Password Reset <a> <br>
 <!--<a href="/accounts/password_reset_confirm/"> Password Reset Confirm <a> <br>-->
-<a href="/accounts/password/reset/done/"> Password Reset Done <a> <br>
+<!--<a href="/accounts/password/reset/done/"> Password Reset Done <a> <br>-->
 <!--<a href="/accounts/password_reset_email/"> Password Reset Email <a> <br>-->
 <!--<a href="/accounts/password_reset_form/"> Password Reset Form <a> <br>-->
+
+<h1> Example Login:</h1>
+<div background-color="lightblue">
+    <h1>Yiding's Online Gallery</h1>
+    <p>
+        {% if user.is_authenticated %}
+        Welcome 
+        '{{ user.username }}'
+        {% else %}
+        <a href="{% url 'login' %}?next={{request.path}}">Login</a>
+        {% endif %}
+    </p> 
+</div>

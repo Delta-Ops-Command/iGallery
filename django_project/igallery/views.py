@@ -1,21 +1,28 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm, UploadImageForm
+from django.http import HttpResponseRedirect, HttpResponse
+# from django.contrib.auth import login, authenticate
+# from django.contrib.auth.forms import UserCreationForm 
+from .forms import UploadImageForm
 from .models import UploadImage 
 
 
-def upload_file(request):
+
+def igallery(request):
     if request.method == 'POST':
         form = UploadImageForm(request.POST, request.FILES)
         if form.is_valid():
-            # Do something with the form
+            if request.user.is_authenticated:
+                instance = UploadImage(file_field=request.FILES['image'], uploader=request.user)
+                instance.save()
 
-            return HttpResponse('Made It!')
+                return HttpResponse('Yes, it works!www ' + request.user.username)
+            else:
+                return HttpResponse ("Please Login First")
+        else:
+            return HttpResponse ("Corrupted Form")
     else:
         form = UploadImageForm()
-    return render(request, 'igallery.html', {'form': form})
+    return render(request, 'simpleUpload.html', {'form': form})
 
 
 """
@@ -23,7 +30,7 @@ def start(request):
     return render(request, 'igallery.html')
 """
 def test(request):
-   text = """<h1>welcome to my app !</h1>"""
+   text = """<h1>I am alive!</h1>"""
    return HttpResponse(text)
 
 """

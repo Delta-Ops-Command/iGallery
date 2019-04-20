@@ -1,0 +1,18 @@
+<form action="/igallery/" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="Submit">
+</form>
+
+
+<div class="jumbotron text-center" background-color="lightblue">
+    <h1>Yiding's Online Gallery</h1>
+    <p>
+        {% if user.is_authenticated %}
+        Welcome 
+        '{{ user.username }}'
+        {% else %}
+        <a href="{% url 'login' %}?next={{request.path}}">Login</a>
+        {% endif %}
+    </p> 
+</div>
