@@ -22,7 +22,7 @@ def igallery(request):
             return HttpResponse ("Corrupted Form")
     else:
         form = UploadImageForm()
-    return render(request, 'simpleUpload.html', {'form': form})
+    return render(request, 'igallery.html', {'upload_form': form})
 
 
 """

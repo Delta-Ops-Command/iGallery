@@ -38,7 +38,6 @@ urlpatterns = [
     #re_path(r'^accounts/logout/$', debugRequestLogout)
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Static URLs Enabled
 
-
 """django_project URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
