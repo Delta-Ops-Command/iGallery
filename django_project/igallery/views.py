@@ -28,17 +28,8 @@ def json_access(request):
             json_data = json.loads(request.body)
             action = json_data["action"]
             parameter = json_data["parameter"]
-                # Specifies nature of the request
-            if "delete" == action:
-                try:
-                    shortenedURL = parameter.strip(settings.MEDIA_URL) # Remove media_url
-                    targetImage = UploadImage.objects.get(file_field=shortenedURL)
-                    if targetImage.uploader == request.user: # Check if use_is_owner, if so, remove image from database
-                        targetImage.delete()
-                    return HttpResponse ("detete_success")
-                except Exception:
-                    return HttpResponseBadRequest ("entry not found")
-            elif "random_pull" == action:
+            if "random_pull" == action: # Request a list of random images
+                # Authentication is NOT required
                 # Specifies amount of images to be pulled, (default) 5
                 requested_size = 5
                 if parameter != "":
@@ -49,26 +40,43 @@ def json_access(request):
                 partialURLs = list(sample(fullURLs,requested_size))
                 dict_response = {"action": "pull", "result":partialURLs}
                 return JsonResponse (dict_response)
-            elif "user_pull" == action:
+            elif "user_pull" == action: # Request a list of URLs from the user
+                if not request.user.is_authenticated:
+                    return HttpResponse('Unauthorized', status=401)
                 # Specifies amount of images to be pulled, (default) 100
+                # Urls listed in chronological order
                 requested_size = 100
                 if parameter != "":
                     requested_size = int(parameter)
                 fullQuery = UploadImage.objects.filter(uploader=request.user)
                 requested_size = fullQuery.count() if requested_size > fullQuery.count() else requested_size # If requested_size exceeds query size, scale it down
                 fullURLs = list((q.file_field.url for q in fullQuery)) 
-                partialURLs = list(sample(fullURLs,requested_size))
+                partialURLs = fullURLs[0:requested_size]
                 dict_response = {"action": "pull", "result":partialURLs}
                 return JsonResponse (dict_response)
-            elif "how_many" == action:
+            elif "how_many" == action: # Retrieve how many image are under user's name
+                if not request.user.is_authenticated:
+                    return HttpResponse('Unauthorized', status=401)
                 session_user = User.objects.get(username=(request.user.username))
                 uploaded_images = UploadImage.objects.all().filter (uploader=session_user)
                 image_count = uploaded_images.count()
-                return HttpResponse (str(image_count))
-            elif "im_fine" == action:
-                # Terminates account by deleting user after images under their name
+                dict_response = {"action": "how_many", "result":image_count}
+                return JsonResponse (dict_response)
+            elif "delete" == action: # Delete image with provided URL
+                if not request.user.is_authenticated:
+                    return HttpResponse('Unauthorized', status=401)
+                try:
+                    shortenedURL = parameter.strip(settings.MEDIA_URL) # Remove media_url
+                    targetImage = UploadImage.objects.get(file_field=shortenedURL)
+                    if targetImage.uploader == request.user: # Check if use_is_owner, if so, remove image from database
+                        targetImage.delete()
+                    return HttpResponse ("detete_success")
+                except Exception:
+                    return HttpResponseBadRequest ("entry not found")
+            elif "im_fine" == action: # Delete user account entirely, alongside images they have uploaded
+                if not request.user.is_authenticated:
+                    return HttpResponse('Unauthorized', status=401)
                 if request.user.is_authenticated:
-                    # Query Lookup
                     session_user = User.objects.get(username=(request.user.username))
                     uploaded_images = UploadImage.objects.all().filter (uploader=session_user)
                     # delete(). Note that cleanup is automatically completed through django-cleanup
@@ -80,10 +88,10 @@ def json_access(request):
                 return HttpResponseBadRequest("Error: Possible data corruption, action key not found") # No corresponding action: found
         else:    
             return HttpResponseBadRequest("Error: Method must be POST")
-    except Exception:
-        print ("A wild exception appeared: ")
+    except Exception as e:
+        print ("A wild exception appeared: ", str(e), type(e))
         return HttpResponseServerError("A wild exception appeared!")
-    
+     
         
 # list(sample(foo,len(foo)-1))
 # /media/cats/Linux_Cheat_Sheet_njT7U0z.png

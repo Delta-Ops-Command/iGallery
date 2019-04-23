@@ -1,8 +1,8 @@
-<a href="/igallery/"> iGallery <a> <br>
-<a href="/accounts/login/?next={{ request.path }}"> login <a> <br>
-<a href="/accounts/logout/"> logout <a> <br>
-<a href="/signup/"> signup <a> <br>
-<a href="/accounts/password_reset/"> Password Reset <a> <br>
+<a href="{% url 'igallery' %}" > iGallery <a> <br>
+<a href="{% url 'login' %}?next={{request.path}}"> login <a> <br>
+<a href="{% url 'logout' %}"> logout <a> <br>
+<a href="{% url 'signup' %}"> signup <a> <br>
+<a href="{% url 'password_reset' %}"> Password Reset <a> <br>
 <!--<a href="/accounts/password_reset_confirm/"> Password Reset Confirm <a> <br>-->
 <!--<a href="/accounts/password/reset/done/"> Password Reset Done <a> <br>-->
 <!--<a href="/accounts/password_reset_email/"> Password Reset Email <a> <br>-->
