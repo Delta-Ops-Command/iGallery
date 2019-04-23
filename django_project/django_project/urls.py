@@ -8,7 +8,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 admin.autodiscover()
 
-# Wasn't able to import these methods, had to leave it here for now...
+# Wasn't able to import these functions, had to leave it here for now...
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -23,14 +23,11 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
     
-def requestMain(request):
+def request_main(request):
     return render(request, 'main/main_view.html')
-    
-def debugRequestLogout(request):
-    return render(request, 'registration/logout.html')
 
 urlpatterns = [
-    re_path(r'^$', requestMain, name="index"),
+    re_path(r'^$', request_main, name="index"),
     re_path(r'^admin/', admin.site.urls, name="admin"),
     re_path(r'^signup/', signup, name="signup"),
     re_path(r'^igallery/', include('igallery.urls'), name='igallery'),

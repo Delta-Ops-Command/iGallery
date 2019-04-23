@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.queryButton {
+  background-color: #ffff00;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+
+<img id="targetImage" alt="Paris" width="300" height="300">
+
+
+<br>
+<button id="btn_delete" class="queryButton">Delete Picture</button><input id="btn_delete-input" type="text" name="delete" placeholder="#">
+<br>
+<button id="btn_randomPull">Random Pull</button><input id="btn_randomPull-input" type="text" name="random_pull" placeholder="#">
+<br>
+<button id="btn_userPull">User Pull</button><input id="btn_userPull-input" type="text" name="user_pull" placeholder="#">
+
+<script>
+    $(".queryButton").click(function(){
+        thisId = this.id
+        corrInputId = "#" + thisId + "-input"
+        doStuff.call ($(corrInputId)[0]);
+
+
+        /*
+        $.ajax({
+            url: 'jsongoeshere/',
+            type: 'POST',
+            data: JSON.stringify(arr),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            async: false,
+            success: function(msg) {
+                alert(msg);
+            }
+        });*/
+    });
+    function doStuff() {
+        json_action = this.name;
+        json_parameter = this.parameter;
+        var arr = { action: json_action, parameter: json_parameter };
+        doStuff.call( $(corrInputId)[0]);
+
+        function doStuff() {
+            json_action = this.name;
+            json_parameter = this.parameter;
+            var arr = { action: json_action, parameter: json_parameter };
+            $.ajax({
+                url: 'jsonimagetest/',
+                type: 'POST',
+                data: JSON.stringify(arr),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                async: false,
+                success: function(msg) {
+                    alert(msg);
+                }, error: function(msg) {
+                    alert(msg);
+                }
+            });
+        }
+
+    }
+</script>
+
+
+    
+
+</body>
+</html>
+
+
+

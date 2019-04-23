@@ -1,0 +1,25 @@
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<button id="DontLookAtMeImALlama"> www</button>
+
+<script>
+var arr = { data: 'INSERTMEME', anotherdata: "CARL!!?" };
+
+
+$("button").click(function(){
+    $.ajax({
+        url: 'jsongoeshere/',
+        type: 'POST',
+        data: JSON.stringify(arr),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        async: false,
+        success: function(msg) {
+            alert(msg);
+        }
+    });
+});
+</script>

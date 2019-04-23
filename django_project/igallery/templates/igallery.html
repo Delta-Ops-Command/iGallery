@@ -221,7 +221,7 @@
               <h4 class="modal-title">Cat Upload</h4>
             </div>
             <div>
-                <form  method="post" enctype="multipart/form-data" action="/igallery/">
+                <form  method="post" enctype="multipart/form-data" action="/igallery/" target="hiddenFrame">
                   {% csrf_token %}
                   {{ upload_form.non_field_errors }}
                   <div class="form-group">
@@ -308,6 +308,7 @@
 </div>
 
 
+<iframe name="hiddenFrame" id="hiddenFrame" width="0" height="0" style="display: none;"></iframe>
 
 
 <script>
@@ -384,4 +385,5 @@
 <noscript>Your browser does not support JavaScript!</noscript>
 </body>
 </html>
+
 
