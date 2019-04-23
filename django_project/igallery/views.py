@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseServerError, HttpResponseBadRequest
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseServerError, HttpResponseBadRequest, JsonResponse
 # from django.contrib.auth import login, authenticate
 # from django.contrib.auth.forms import UserCreationForm 
 from .forms import UploadImageForm
 from .models import UploadImage 
 from django.contrib.auth.models import User
 import json # For parsing JSON
+from random import sample # For generating a sublist from a list
+from django.conf import settings # For discovering media root
 
 
 def json_access(request):
@@ -62,24 +64,47 @@ def json_access(request):
 def json_image_test(request):
     print ("data received")
     if request.method == 'POST':
-        
-        print ("method-post confirmed")
         json_data = json.loads(request.body)
         action = json_data["action"]
+        parameter = json_data["parameter"]
         if "delete" == action:
-            print ("action: delete")
-            # If the request contains delete, then:
-            # Check if use_is_owner
-            # If so, remove image from database
-            return HttpResponse ("detete_success")
+            try:
+                shortenedURL = parameter.strip(settings.MEDIA_URL) # Remove media_url
+                targetImage = UploadImage.objects.get(file_field=shortenedURL)
+                if targetImage.uploader == request.user: # Check if use_is_owner, if so, remove image from database
+                    targetImage.delete()
+                return HttpResponse ("detete_success")
+            except Exception:
+                return HttpResponseBadRequest ("entry not found")
         elif "random_pull" == action:
-            print ("action: random_pull")
-            # If the request contains random_pull, then:
-            return HttpResponse ("random_pull_success")
+            # Specifies amount of images to be pulled, (default) 5
+            requested_size = 5
+            if parameter != "":
+                requested_size = int(parameter)
+            fullQuery = UploadImage.objects.all()
+            requested_size = fullQuery.count() if requested_size > fullQuery.count() else requested_size # If requested_size exceeds query size, scale it down
+            fullURLs = list((q.file_field.url for q in fullQuery)) 
+            partialURLs = list(sample(fullURLs,requested_size))
+            
+            # Pulls specified amount of images urls, default 5
+            dict_response = {"action": "pull", "result":partialURLs}
+            json_response = json.dumps(dict_response)
+            return JsonResponse (dict_response)
         elif "user_pull" == action:
-            print ("action: user_pull")
-            # If the request contains user_pull, then:
-            return HttpResponse ("user_pull_success")
+            requested_size = 5
+            if parameter != "":
+                requested_size = int(parameter)
+            fullQuery = UploadImage.objects.filter(uploader=request.user)
+            requested_size = fullQuery.count() if requested_size > fullQuery.count() else requested_size # If requested_size exceeds query size, scale it down
+            fullURLs = list((q.file_field.url for q in fullQuery)) 
+            partialURLs = list(sample(fullURLs,requested_size))
+            # Pulls specified amount of images urls, default 5
+            dict_response = {"action": "pull", "result":partialURLs}
+            json_response = json.dumps(dict_response)
+            return JsonResponse (dict_response)
+# list(sample(foo,len(foo)-1))
+# /media/cats/Linux_Cheat_Sheet_njT7U0z.png
+# UploadImage.objects.filter(file_field="cats/Linux_Cheat_Sheet_njT7U0z.png")
 
 def igallery(request): # Handles image upload and test formatting
     if request.method == 'POST':

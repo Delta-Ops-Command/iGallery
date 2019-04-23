@@ -14,5 +14,3 @@ class UploadImage(models.Model):
     class Meta:
         db_table = "upload_image_model"
         # permissions...
-
-
