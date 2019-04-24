@@ -70,9 +70,10 @@ def json_access(request):
                     targetImage = UploadImage.objects.get(file_field=shortenedURL)
                     if targetImage.uploader == request.user: # Check if use_is_owner, if so, remove image from database
                         targetImage.delete()
-                    return HttpResponse ("detete_success")
+                    dict_response = {"action": "delete", "result": parameter}
+                    return JsonResponse (dict_response)
                 except Exception:
-                    return HttpResponseBadRequest ("entry not found")
+                    return HttpResponseBadRequest ("Bad delete request: " + parameter)
             elif "im_fine" == action: # Delete user account entirely, alongside images they have uploaded
                 if not request.user.is_authenticated:
                     return HttpResponse('Unauthorized', status=401)
@@ -82,7 +83,8 @@ def json_access(request):
                     # delete(). Note that cleanup is automatically completed through django-cleanup
                     session_user.delete()
                     uploaded_images.delete()
-                return HttpResponse("account_delete_success")
+                dict_response = {"action": "account_delete", "result": parameter}
+                return JsonResponse (dict_response)
             else:
                 # then something must be going wrong.
                 return HttpResponseBadRequest("Error: Possible data corruption, action key not found") # No corresponding action: found

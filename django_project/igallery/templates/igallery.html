@@ -153,20 +153,22 @@
       <a href="{% url 'login' %}?next={{request.path}}">Login</a>
     {% endif %}
   </p> 
+  <p id="p_userGallerySize"> Placeholder </p>  
 </div>
   
 <!--catMajorContainer 1-->
-<div id="catDisplay" class="catMajorContainer container-fluid">
+<div id="div_catDisplay" class="catMajorContainer container-fluid">
   <div class="row row-eq-height";>
     <!--catLeftToolbar 1-->
     <div class="col-xs-2 catLeftToolbar">
       <button type="button" data-toggle="tooltip" title="Help Menu" class="btn btn-md btn-primary btnCatSlide text-center" >Help</button>
+      <button id="btn_clearCarousel" type="button" data-toggle="tooltip" title="Clears Carousel" class="btn btn-md btn-primary btnCatSlide text-center" >Clear:3</button>
       <!--The <input> fields corresponding to the following files are purposefully set to display:none-->
       <button type="button" data-toggle="tooltip" title="Retrieve amount of images under user" id="btn_howMany" class="queryButton btn btn-md btn-primary btnCatSlide text-center"
       {% if not user.is_authenticated %}
         disabled
       {% endif %}>Query Size</button><input style="display: none" id="btn_howMany-input" type="text" name="how_many" placeholder="#">
-      <button type="button" data-toggle="tooltip" title="Delete Account" id="btn_fine" class="queryButton btn btn-md btn-primary btnCatSlide text-center"
+      <button disabled type="button" data-toggle="tooltip" title="Delete Account" id="btn_fine" class="queryButton btn btn-md btn-primary btnCatSlide text-center"
       {% if not user.is_authenticated %}
         disabled
       {% endif %}>Delete Account</button><input style="display: none" id="btn_fine-input" type="text" name="im_fine" placeholder="#">
@@ -177,6 +179,7 @@
       {% if not user.is_authenticated %}
         disabled
       {% endif %}>
+      <!--onclick() of this button is also triggered upon startup to load in a few images-->
       <button type="button" data-toggle="tooltip" title="Random Pull" id="btn_randomPull" class="queryButton btn btn-md btn-primary btnCatSlide text-center">Random Pull</button><input id="btn_randomPull-input" type="number" min=0 max=1000 name="random_pull" placeholder="#">
       <button type="button" data-toggle="tooltip" title="Use Pull" id="btn_userPull" class="queryButton btn btn-md btn-primary btnCatSlide text-center"
       {% if not user.is_authenticated %}
@@ -188,36 +191,21 @@
     </div>
 
     <!--Right stuff-->
-    <div class="col-xs-10 catRightContent">
-      <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <div class="col-xs-10 catRightContent" style="background-color: bisque">
+      <div id="div_myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
         <!-- Carousel Indicators -->
-        <ol id="catCarouselIndicators" class="carousel-indicators">
-          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-          <li data-target="#myCarousel" data-slide-to="1"></li>
-          <li data-target="#myCarousel" data-slide-to="2"></li>
+        <ol id="ol_catCarouselIndicators" class="carousel-indicators">
         </ol>
         <!-- Wrapper for slides -->
-        <div id="catCarouselInner" class="carousel-inner" role="listbox" >
-          <div class="item active">
-            <img src="assets/pic1.jpg" alt="Cat">
-          </div>
-      
-          <div class="item">
-            <img src="assets/pic2.jpg" alt="Catqwe">
-          </div>
-      
-          <div class="item">
-              <img src="assets/pic3.jpg" alt="Catee">
-            </div>
-
+        <div id="div_catCarouselInner" class="carousel-inner" role="listbox" >
         </div>
       
         <!-- Controls for scrolling left or right -->
-        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+        <a class="left carousel-control" href="#div_myCarousel" data-slide="prev">
           <span class="glyphicon glyphicon-chevron-left"></span>
           <span class="sr-only">Previous</span>
         </a>
-        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+        <a class="right carousel-control" href="#div_myCarousel" data-slide="next">
           <span class="glyphicon glyphicon-chevron-right"></span>
           <span class="sr-only">Next</span>
         </a>
@@ -234,13 +222,13 @@
 
       <!--Button to trigger Upload Modal-->
       <span data-toggle="tooltip" title="Upload a cat">
-        <button type="button" data-toggle="modal" class="btn btn-md btnCatSlide text-center" data-toggle="modal" data-target="#catUploadModal"
+        <button type="button" data-toggle="modal" class="btn btn-md btnCatSlide text-center" data-toggle="modal" data-target="#div_catUploadModal"
         {% if not user.is_authenticated %}
         disabled
         {% endif %} >UL</button>
       </span>
       <!-- Upload Modal -->
-      <div class="modal fade" id="catUploadModal" role="dialog">
+      <div class="modal fade" id="div_catUploadModal" role="dialog">
         <div class="modal-dialog">
           <!--Modal Content-->
           <div class="modal-content" style="padding: 10px">
@@ -271,13 +259,13 @@
 
       <!--Button to trigger Download Modal-->
       <span data-toggle="tooltip" title="Download a cat">
-          <button id="btnEnableDownloadModal" onclick="catPicUpdate()" type="button" data-toggle="modal" class="btn btn-md btnCatSlide text-center" data-toggle="modal" data-target="#catDownloadModal"
+          <button id="btn_enableDownloadModal" type="button" data-toggle="modal" class="btn btn-md btnCatSlide text-center" data-toggle="modal" data-target="#div_catDownloadModal"
           {% if not user.is_authenticated %}
           disabled
           {% endif %}>DL</button>
       </span>
       <!-- Download Modal -->
-      <div class="modal fade" id="catDownloadModal" role="dialog">
+      <div class="modal fade" id="div_catDownloadModal" role="dialog">
         <div class="modal-dialog">
           <!-- Modal content-->
           <div class="modal-content">
@@ -287,10 +275,10 @@
             </div>
             <div class="modal-body center-block" style="max-height: 40vh">
               <p>You sure you want to download this cat?</p>
-              <img id="modalImgCatDisplay" src="assets/pic1.jpg" alt="Cat" style="height:100%; width:100%; object-fit: contain; max-height: 30vh;">
+              <img id="img_modalImgCatDisplay" src="" alt="Cat" style="height:100%; width:100%; object-fit: contain; max-height: 30vh;">
             </div>
             <div class="modal-footer">
-              <a id="modalBtnCatDownloadYes" href="Dummy" download="Cat Picture" type="button" class="btn btn-default" download>YES!</a>
+              <a id="a_modalBtnCatDownloadYes" href="Dummy" download="Cat Picture" type="button" class="btn btn-default" download>YES!</a>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>
@@ -320,10 +308,8 @@
       <div class="container-fluid" style="height:100%;">
         <div class="form-group" style="margin: 5% 0% 5% 0%; height:75%">
           <label for="formControlSelect" style="background-color: whitesmoke; height:auto; overflow: hidden; padding: 0">Cat Console</label>
-          <select id="selectCatConsoleList" multiple class="form-control" id="formControlSelect" style="height:80%">
-            <option>assets/pic1.jpg</option>
-            <option>assets/pic2.jpg</option>
-            <option>assets/pic3.jpg</option>
+          <select id="select_CatConsoleList" multiple class="form-control" id="form_ControlSelect" style="height:80%">
+            
           </select>
         </div>
       </div>
@@ -340,12 +326,34 @@
 
 
 <script>
+  $(document).ready(function () {
+    btn_randomPull.click();
+    btn_howMany.click();
+  });
+
+  $("#btn_delete").mouseenter(function(){
+    $("#btn_delete-input").val(currentlyDisplayedUrl());
+  });
+
+  $("#btn_clearCarousel").click(function(){
+    clearCarouselForced();
+  });
+
+  // Updates download image upon opening modal for downloading
+  $("#btn_enableDownloadModal").click(function(){
+    var urlOnDisplay = currentlyDisplayedUrl()
+    $("#img_modalImgCatDisplay")[0].src= urlOnDisplay;
+    $("#a_modalBtnCatDownloadYes")[0].download=urlOnDisplay;
+    return true;
+  });
+  
+
   $(".queryButton").click(function(){
     thisId = this.id
     corrInputId = "#" + thisId + "-input"
-    doStuff.call ($(corrInputId)[0]);
+    jsonCall.call ($(corrInputId)[0]);
 
-    function doStuff() {
+    function jsonCall() {
         json_action = this.name;
         json_parameter = this.value;
         var arr = { action: json_action, parameter: json_parameter };
@@ -356,9 +364,28 @@
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             async: false,
-            success: function(msg) {
+            success: function(msg) { // Upon receiving response, if success, identify response type and edit resourcs accordingly
+                jsonResponseAction = msg["action"]; 
+                jsonResponseResult = msg["result"];
+                switch(jsonResponseAction) {
+                  case "pull":
+                    addImageByList (jsonResponseResult);
+                    break;
+                  case "how_many":
+                    updateUserGallerySize (jsonResponseResult);
+                    break;
+                  case "delete":
+                    baseId = localStorage.getItem(jsonResponseResult);
+                    // If server response === deletion successful
+                    removeImageByBaseId (baseId);
+                    carouselEmptyAutoHide();
+                    break;
+                  case "user_delete":
+                    location.reload();
+                    break;
+                  default:
+                }
                 //alert((JSON.parse(JSON.stringify(msg)))["responseText"]);
-                alert(JSON.stringify(msg));
             }, error: function(msg) {
                 alert(JSON.stringify(msg));
             }
@@ -366,14 +393,141 @@
       }
   });
 
+  function addImageByList(imgList) {
+    carouselEmptyAutoHide();
+    initialIteration = true;
+    for (url in imgList) {
+      url = imgList[url];
+      addImage(url);
+    };
+    carouselActiveStateReset(0);
+    carouselEmptyAutoHide();
+  }
 
-  // Update download modal with currently displayed image
-  var srcCurrentDisplayingCat = document.getElementsByClassName("item active")[0].childNodes[1].src
-  document.getElementById("modalImgCatDisplay").src = srcCurrentDisplayingCat;
-  document.getElementById("modalBtnCatDownloadYes").href = srcCurrentDisplayingCat;
-  function catPicUpdate () {
-    document.getElementById("modalImgCatDisplay").src = document.getElementsByClassName("item active")[0].childNodes[1].src;
-    document.getElementById("modalBtnCatDownloadYes").href = document.getElementsByClassName("item active")[0].childNodes[1].src;
+  // Note that this method does not auto-reset
+  function addImage (url) {
+
+    // This is to avoid adding images with the same url
+    if (localStorage.getItem(url) === null) {
+      BASE_DIR=location.protocol + "//" + location.host;
+      fullUrl = BASE_DIR + url;
+      uId = uniqueId();
+      urlId = uId;
+      localStorage.setItem(uId, url);
+      localStorage.setItem(url, uId);
+      $("#select_CatConsoleList").append("<option " + ("id=\"" + urlId + "_option\"") + " data-target=\"#div_myCarousel\" data-slide-to=\"" + uId +"\" >" + urlId + "</option>");
+      $("#ol_catCarouselIndicators").append("<li " + ("id=\"" + urlId + "_li\"") + " data-target=\"#div_myCarousel\" data-slide-to=\"" + uId + "\"></li>");
+      $("#div_catCarouselInner").append(
+        "<div class=\"item\"" + ("id=\"" + urlId + "_carouselItem\"") + "> \
+          <img src=\"" + url +  "\" alt=\"Cat\"> \
+        </div>"
+      );
+    } else {
+      concole.log("AddImage: repetition omitted");
+    }
+  }
+//removeImageByBaseId
+
+
+  function currentDisplayedBaseId () {
+    var carouselIndex = $('li.active').index();
+    var corrBaseId = indexToBaseId (carouselIndex);
+    return corrBaseId;
+  }
+  function currentlyDisplayedUrl () {
+    var corrUrl =  localStorage.getItem(currentDisplayedBaseId());
+    return corrUrl;
+  }
+  function removeImageByBaseId (baseId) {
+    correspondingUrl = localStorage.getItem(baseId);
+    localStorage.removeItem(correspondingUrl);
+    localStorage.removeItem(baseId);
+
+    urlId = "#" + baseId;
+    optionId = (urlId + "_option");
+    liId = (urlId + "_li");
+    carouselId = (urlId + "_carouselItem");
+    $ (optionId).remove();
+    $ (liId).remove();
+    $ (carouselId).remove();
+    carouselActiveStateReset();
+    carouselEmptyAutoHide();
+  }
+
+  // 
+
+  function indexToBaseId(positionalId) { // Given index of an element in the list, return its corresponding baseId
+    indicatorId = idToBaseId ($("#ol_catCarouselIndicators:first").children()[positionalId].id);
+    carouselId = idToBaseId ($("#div_catCarouselInner:first").children()[positionalId].id);
+    if (indicatorId != carouselId) {
+      alert ("ID Mismatch!");
+      return false;
+    } else {
+      return indicatorId;
+    }
+    return false;
+  }
+
+  function baseIdToIndex (id) { // Given base Id, acquire its index in carousel
+    childrenList = $("#ol_catCarouselIndicators:first").children()
+    collectionLength = childrenList.length;
+    for (i = 0; i < collectionLength; i++) {
+      if (idToBaseId(childrenList[i].id)) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  function setActive(indexId)  {
+    $("#div_myCarousel").carousel(indexId);
+  }
+
+  // Reset "active" state of all carousels.
+  // Also, in case main slide is hidden, display it.
+  function carouselActiveStateReset()  { 
+    childrenList = $("#ol_catCarouselIndicators:first").children();
+    collectionLength = childrenList.length;
+    for (i = 0; i < collectionLength; i++) {
+      $("#div_catCarouselInner:first").children()[i].className = "item";
+      $("#ol_catCarouselIndicators:first").children()[i].className = "";
+    }
+    $("#div_catCarouselInner:first").children()[0].className = "active item";
+    $("#ol_catCarouselIndicators:first").children()[0].className = "active";
+    $("#div_myCarousel").show();
+    return true;
+  }
+
+  function carouselEmptyAutoHide() {
+    try {indexToBaseId(0)}
+    catch (err) {
+      clearCarouselForced();
+    };
+  }
+
+  // Resets carousel to initial stage, by essentailly deleting all elements
+  function clearCarouselForced() {
+    $("#div_catCarouselInner").empty();
+    $("#ol_catCarouselIndicators").empty();
+    $("#select_CatConsoleList").empty();
+    $("#div_myCarousel").hide();
+    localStorage.clear(); // Clear local storage, start fresh
+    counter = 0; // Reset counter to 0
+    return true;
+  }
+
+  function idToBaseId(idWithExtra) {
+    return idWithExtra.replace("_option", "").replace("_carouselItem", "").replace("_li", "").replace("#","");
+  }
+
+  function updateUserGallerySize(size) {
+    $("#p_userGallerySize").text(size);
+  }
+
+  // Incrementally returns an id in the form of #<id>
+  var counter = 0; 
+  window.uniqueId = function(){
+      return counter++
   }
 
   //For Bootstrap Tooltips
@@ -390,5 +544,4 @@
 <noscript>Your browser does not support JavaScript!</noscript>
 </body>
 </html>
-
 
