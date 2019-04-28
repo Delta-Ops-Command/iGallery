@@ -45,8 +45,6 @@ iGallery leads to the main application page:
 
 
 
-
-
 - **Clear** :3: Clears carousel slides, resets local storage, and reset iy67546tyd counter. This action will also be performed once all displayed images are deleted via the (#Delete Picture) button
 - **Query Size** : Refreshes number displayed at top to reflect number of images contributed under current user&#39;s name.
   - Will be automatically triggered after every action that alters displayed image
@@ -89,37 +87,28 @@ This page is not meant to be accessible by normal users, but rather directly via
 
 ## Lethal
 
-Situations /glitches that sometimes renders the application unusable:
+Situations /glitches that may sometimes renders the application unusable:
 
 - With slow connection, some unintended error may come to play:
   - In one test instance, carousel failed to initialize properly, resulting in misplaced starting images. I have since failed to reproduce this glitch
   - In one test instance, login page failed to redirect back. I have since failed to reproduce this glitch.
   - Rapid, successive clicks of the upload\_image button with the intention to upload the same file repeatedly may cause some of them not being uploaded (e.g. 4 uploaded after 10 button clicks)
-- Git logs are grammatically inconsistent and (for initial commit) incorrect
+- Git logs are grammatically inconsistent and (as for the initial commit) incorrect
   - Had to be left this way since last attempt to fix it resulted a bit of trouble.
 
 ## Critical
 
 - Debug mode still enabled, with media files directly served from MEDIA\_URL.
-- Script utilizes an absurd mix of bad Html, JS and jQuery. Codes are allowed to exist long as they work, with little regards of efficiency whatsoever
-- Due to the above reason, some codes could be ready for execution before document is fully loaded. Although no problems have arisen so far but I could definitely see errors occurring because of that.
+- Some codes could be ready for execution before document is fully loaded. Although no problems have arisen so far but I could definitely see errors occurring because of that.
 - Carousel nan not accommodate images of all dimensions, resulting inconstancies with pictures of different dimensions.
-- Server vulnerable to spam
-- Unable to size down images displayed, page will render very slowly under slow connections, with adds to the
 
 ## Minor
 
-Glitches that may not even be considered a glitch, but just in case.
-
 Features that won&#39;t affect user&#39;s overall experience
 
-- No firewalls have been implemented whatsoever, not that I know how.
-- No precautious measurements have been taken to prevent misuse (yes you that red button over there).
 - Unlike mainstream social platforms, another user with identical username can be created after, possibly allowing impersonation
   - Which is inconsequential since username is used as login credential only, with rest of the site being entirely anonymous.
 - User Pull can only retrieve images in chronological order
-- Only some of the HTML elements utilized
-- Still ugly colour combination, well at least it works.
 
 # Compromises
 
@@ -129,11 +118,11 @@ Compromises made with relation to project objective, outside of the functional s
   - This allows for the implementation of additional features such as DTL tags, and better integration with authentication system.
   - as a result, all pages are served through render(), in combination with {% csrf\_token %}, also prevents cross-site forgery
 
-- User authentication pages ( **signup.html** , etc.) are largely &quot;borrowed&quot; from online sources. (also the only place in this app where such outrageous )
+- User authentication pages ( **signup.html** , etc.) are largely &quot;borrowed&quot; from online sources. (also the only case of massive outsourcing)
 
-- After **user deletes an image** , only its database entry will be removed. Corresponsing files stored in server remains. It keeps good logs and prevents unwanted data loss, while at the meantime puts a heavy strain on server-side storage.
+- After **user deletes an image** , only its database entry will be removed. Corresponsing files stored in server remains untouched. It keeps good logs and prevents unwanted data loss, while at the meantime puts a heavy strain on server-side storage.
   - Better: Missing server-side assets will not cause error
   - Worse: So far server-side assets can only be deleted from bash
 - Carousel slides will not be updated after successful image upload, since it could contain either random or user-specific images.
   - User need to decide between performing a random\_pull or user\_pull to update carousel display.
-- Page will not refresh after deleting account, allowing user to cherish their last moment with adorable cats.
+- Page will not refresh after deleting account, allowing user to cherish their last moment with their adorable cats.
